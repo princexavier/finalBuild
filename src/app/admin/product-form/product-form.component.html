@@ -1,0 +1,67 @@
+<div class="row" *ngIf="!loader">
+    <div class="col-md-6">
+        <form (ngSubmit)="save(form)" #form="ngForm">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input #title="ngModel" [(ngModel)]="product.title" required name="title" id="title" type="text"
+                    class="form-control">
+                <div *ngIf="title.touched && title.invalid" class="alert alert-danger">
+                    Title is Required
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title">Price</label>
+                <input #price="ngModel" required [(ngModel)]="product.price" name="price" id="title" type="text"
+                    class="form-control" [min]="0">
+                <div *ngIf="price.touched && price.invalid" class="alert alert-danger">
+                    <div *ngIf="price.errors.required">
+                        Price is Required
+                    </div>
+                    <div *ngIf="price.errors.min">
+                        Price Should be 0 or Higher
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title">Category</label>
+                <select #category="ngModel" required [(ngModel)]="product.category" name="category" id=""
+                    class="form-control">
+                    <option *ngFor="let c of categories$ " [value]="c['$key']">{{c.name}}</option>
+
+                </select>
+                <div *ngIf="category.touched && category.invalid" class="alert alert-danger">
+                    Category is Required
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title">Image Url</label>
+                <input required #image="ngModel" [(ngModel)]="product.image" name="image" id="title" type="text"
+                    class="form-control" url>
+                <div *ngIf="image.touched && image.invalid" class="alert alert-danger">
+                    <div *ngIf="image.errors.required">
+                        Valid URL is Required
+                    </div>
+                    <div *ngIf="image.errors.url">
+                        Please Check The URL
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" value="submit">Save</button>
+                <button class="btn btn-danger" (click)="delete()" type="button">Delete</button>
+
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div class="card" style="width: 55%;">
+            <img [src]="product.image" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{product.title}}</h5>
+                <p class="card-text">{{product.price | currency:'INR':true}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<app-spinner *ngIf="loader"></app-spinner>
+

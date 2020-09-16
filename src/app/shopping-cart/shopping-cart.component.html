@@ -1,0 +1,55 @@
+<h1>Cart</h1>
+<ng-container>
+  <p>
+    You have {{allItemsCount}} items in your cart
+  </p>
+</ng-container>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Product</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="totalAmount>0; else empty">
+      <tr *ngFor="let item of productsKeys;let i =index">
+        <ng-container *ngIf="items[item]['quantity'] > 0">
+          <th scope="row">{{i+1}}</th>
+          <td>{{items[item]['product']['title']}}</td>
+          <td>{{items[item]['quantity']}}</td>
+          <td>
+            <product-quantity [product] ="items[item]['product']" [shopping-cart]="shoppingCart"></product-quantity>
+
+          </td>
+          <td>{{ items[item]['quantity'] * items[item]['product']['price']}}</td>
+
+        </ng-container>
+
+      </tr>
+    </ng-container>
+    <ng-template #empty>
+      <tr>
+        <td></td>
+        <td></td>
+        <td>No Record Found</td>
+        <td></td>
+
+      </tr>
+    </ng-template>
+
+
+  </tbody>
+  <tfoot>
+    <tr>
+      <th></th>
+      <th></th>
+      <th>Total :</th>
+      <th>{{totalAmount | currency:'INR'}}</th>
+    </tr>
+  </tfoot>
+</table>
